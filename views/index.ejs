@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <% include header %>
+</head>
+<body>
+    <!-- Al comienzo del body -->
+    <h4 style="text-align: right;">Bienvenido: <%= user.name %> <%= user.surname %> (<%= user.email %>)</h4>
+
+    <h1><strong><%= title %></strong></h1>
+    <p>Welcome to <%= title %></p>
+
+    <main id="main-content">
+      <div id="circle-container">
+        <div class="circle"><i class="fas fa-utensils"></i></div>
+        <div class="circle"><i class="fas fa-plane"></i></div>
+        <div class="circle"><i class="fas fa-tree"></i></div>
+        <div class="circle"><i class="fas fa-futbol"></i></div>
+        <div class="circle"><i class="fas fa-gamepad"></i></div>
+        <div class="circle"><i class="fas fa-pencil-alt"></i></div>
+      </div>
+    </main>    
+
+    <!-- mapa -->
+    <div id="mapid" style="height: 400px;"></div>
+
+    <script>
+       
+        var mymap = L.map('mapid').setView([40.41, -3.68], 13);
+      
+        // mapa base (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(mymap);
+      
+        // marcador 
+        L.marker([40.41, -3.68]).addTo(mymap).bindPopup('¡Hola! Este es un marcador de ejemplo.');
+    </script>
+
+    <!-- Formulario para agregar nuevos personajes -->
+    <h3>Agregar un personaje</h3>
+    <form class="form-horizontal" action="/" method='POST'>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="email">Nombre:</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="nombre" placeholder="Introduce el Nombre">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="pwd">Fuerza:</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="fuerza" placeholder="Introduce la Fuerza">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="pwd">Faccion:</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="faccion" placeholder="Introduce la Facción">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Tabla de personajes -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fuerza</th>
+                <th>Facción</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var i=0; i<personajes.length; i++) { %>
+            <tr>
+                <td><a href="/character/<%= personajes[i]._id %>"><%= personajes[i]._id %></a></td>
+                <td><%= personajes[i].Nombre %></td>
+                <td><%= personajes[i].Fuerza %></td>
+                <td><%= personajes[i].Faccion %></td>
+                <td>
+                    <form action="/character/<%= personajes[i]._id %>" method='POST'>
+                        <button type="submit" class="btn btn-danger">Eliminar personaje</button>
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <% include footer %>
+</body>
+</html>
