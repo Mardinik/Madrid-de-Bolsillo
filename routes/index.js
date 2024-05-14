@@ -8,7 +8,7 @@ var Personaje = require('../models/personaje');
 router.get('/', async function(req, res, next) {
   try {
     const personajes = await Personaje.find({});
-    res.render('index', { title: 'Starwars page', personajes, user: req.user });
+    res.render('index', { title: 'Madrid de Bolsillo', personajes, user: req.user });
 
   } catch (err) {
     next(err);
@@ -70,6 +70,8 @@ router.post('/character/:ID', async function(req, res, next) {
     next(err);
   }
 });
+
+
 
 // Ruta GET para XML
 router.get('/xml', async (req, res, next) => {

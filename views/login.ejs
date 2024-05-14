@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Webleb</title>
+  <title>Madrid de Bolsillo</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
@@ -19,6 +19,18 @@ body{
 	color: #ffeba7;
 	background-color: #1f2029;
 }
+
+h1 {
+  position: absolute;
+  top: 20px; /* Margen superior */
+  left: 50%; /* Centra horizontalmente */
+  transform: translateX(-50%); /* Corrige la posición */
+  font-size: 36px; /* Tamaño de la fuente */
+  color: transparent; /* Color transparente para el texto */
+  -webkit-text-stroke: 2px #ffeba7; /* Añade contorno al texto */
+
+}
+
 a:hover {
 	text-decoration: none;
 }
@@ -193,16 +205,63 @@ display: none;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
 }
 
+/* volver boton */
+.Volver{
+	padding: 0.8em 1.8em;
+	border-radius: 8px;
+	background-color: transparent;
+	color:#ffeba7;
+	border:2px solid #ffeba7;
+	font-size: 16px;
+	cursor: pointer;
+	z-index: 1;
+	transition: 0.3s;
+	overflow:hidden ;
+	position: absolute; /* Cambiado a position: absolute */
+	top: 90%; /* Centra verticalmente */
+	left: 50%; /* Centra horizontalmente */
+	transform: translate(-50%, -50%); /* Corrige la posición */
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.Volver:before{
+	content:'';
+	width: 0;
+	height: 300%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transition: 0.5s ease;
+	transform: translate(-50%,-50%) rotate(45deg);
+	display: block;
+	z-index: -1;
+	background-color: #ffeba7;
+}
+.Volver:hover::before{
+	width: 105%;
+}
+.Volver:hover{
+	color:#111;
+}
+
+
 
 </style>
 </head>
 <body>
+
+  <h1>MADRID DE BOLSILLO</h1>
+
 	<div class="section">
 		<div class="container">
 			<div class="row full-height justify-content-center">
 				<div class="col-12 text-center align-self-center py-5">
 					<div class="section pb-5 pt-5 pt-sm-2 text-center">
-						<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+						<h6 class="mb-0 pb-3"><span>Iniciar Sesión</span><span>Registrarse</span></h6>
 			          	<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
 			          	<label for="reg-log"></label>
 						<div class="card-3d-wrap mx-auto">
@@ -210,29 +269,31 @@ display: none;
 								<div class="card-front">
 									<div class="center-wrap">
 										<div class="section text-center">
-											<h4 class="mb-4 pb-3">Log In</h4>
+											<h4 class="mb-4 pb-3">Iniciar Sesión</h4>
 											<div class="form-group">
 												<input type="email" class="form-style" placeholder="Email">
 												<i class="input-icon uil uil-at"></i>
 											</div>	
 											<div class="form-group mt-2">
-												<input type="password" class="form-style" placeholder="Password">
+												<input type="password" class="form-style" placeholder="Contraseña">
 												<i class="input-icon uil uil-lock-alt"></i>
 											</div>
-											<a href="https://www.web-leb.com/code" class="btn mt-4">Login</a>
-				      					</div>
-			      					</div>
+                      <form action="/login" method="post">
+                        <a href="http://localhost:3000/" class="btn mt-4">Iniciar Sesión</a>
+                      </form>
+				      				</div>
 			      				</div>
+			      			</div>
 								<div class="card-back">
 									<div class="center-wrap">
 										<div class="section text-center">
-											<h4 class="mb-3 pb-3">Sign Up</h4>
+											<h4 class="mb-3 pb-3">Registrarse</h4>
 											<div class="form-group">
-												<input type="text" class="form-style" placeholder="Full Name">
+												<input type="text" class="form-style" placeholder="Nombre Completo">
 												<i class="input-icon uil uil-user"></i>
 											</div>	
 											<div class="form-group mt-2">
-												<input type="tel" class="form-style" placeholder="Phone Number">
+												<input type="tel" class="form-style" placeholder="Número de Teléfono">
 												<i class="input-icon uil uil-phone"></i>
 											</div>	
                       <div class="form-group mt-2">
@@ -240,10 +301,12 @@ display: none;
 												<i class="input-icon uil uil-at"></i>
 											</div>
 											<div class="form-group mt-2">
-												<input type="password" class="form-style" placeholder="Password">
+												<input type="password" class="form-style" placeholder="Contraseña">
 												<i class="input-icon uil uil-lock-alt"></i>
 											</div>
-											<a href="https://www.web-leb.com/code" class="btn mt-4">Register</a>
+                      <form action="/signup" method="post">
+                        <a href="http://localhost:3000/" class="btn mt-4">Registrarse</a>
+                      </form>
 				      					</div>
 			      					</div>
 			      				</div>
@@ -254,5 +317,9 @@ display: none;
 	      	</div>
 	    </div>
 	</div>
+
+  <a href="/" class="Volver">Volver a la página principal</a>
+
+
 </body>
 </html>

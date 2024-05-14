@@ -1,72 +1,41 @@
-body {
-  background-color: #f4e3de;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  padding: 10px;
+body{
+	font-family: 'Poppins', sans-serif;
+	font-weight: 300;
+	line-height: 1.7;
+	color: black;
+	background-color: #1f2029;
 }
 
-a {
-  color: #00B7FF;
+/*
+.R-icon {
+    background-color: #ff0000; 
+    color: #ffffff; 
+    border-radius: 50%;
+    text-align: center;
+    font-size: 24px;
+    line-height: 50px; 
+}
+*/
+
+/* CSS personalizado para los iconos de los planes */
+.custom-div-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px; /* Esto asegura que los iconos estén centrados verticalmente */
+    font-size: 24px; /* Ajusta el tamaño de los iconos */
 }
 
-#header {
-  background-color: #ffffff;
-}
-
-#footer {
-  background-color: #ffffff; 
-  padding: 20px;
-  margin-bottom: 10px;
-}
-
-/* Estilo del Pop-Up */
-.leaflet-popup-content {
-  padding: 10px; /* Añadir un poco de relleno al contenido del pop-up */
-  font-size: 14px; /* Tamaño de fuente para una mejor legibilidad */
-}
-
-/* Estilo marcador */
-.leaflet-marker-icon {
-  background-image: url('ruta/a/imagen/marcador.png'); /* Cambiar la imagen del marcador */
-  background-size: cover; /* Ajustar el tamaño de la imagen del marcador */
-  width: 0; /* Ancho inicial del marcador */
-  height: 0; /* Altura inicial del marcador */
-  margin-left: -12.5px; /* Mitad del ancho del marcador */
-  margin-top: -20.5px; /* Mitad de la altura del marcador */
-}
-
-/* Color marcador personalizado */
-.custom-icon {
-  color: red; /* Cambia el color del ícono */
-}
-
-/* Color marcador personalizado */
-.custom-icon {
-  color: red; /* Cambia el color del ícono */
-}
-
-/* Los simbolos principales */
-#circle-container {
-  padding: 50px;
-  display: flex; /* Utiliza flexbox para alinear horizontalmente los círculos */
-  justify-content: center; /* Centra horizontalmente los círculos */
-  flex-wrap: wrap; /* Permite que los círculos se envuelvan cuando no haya suficiente espacio */
-}
-
+/* Estilos adicionales para los círculos */
 .circle {
-  display: flex; /* Utiliza flexbox para centrar verticalmente los íconos dentro de los círculos */
-  justify-content: center; /* Centra horizontalmente los íconos dentro de los círculos */
-  align-items: center; /* Centra verticalmente los íconos dentro de los círculos */
-  width: 100px;
-  height: 100px;
-  background-color: #457b9d;
-  border-radius: 50%;
-  margin: 10px;
-  font-size: 14px;
+    width: 40px; /* Aumenta el tamaño del contenedor del círculo para dejar espacio para el icono */
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Asegura que el contenedor sea un círculo */
+    border: 2px solid #ccc; /* Añade un borde para destacar el círculo */
+    margin: 10px; /* Añade un espacio entre los círculos */
 }
-
-.circle i {
-  color: #ffffff;
-  font-size: 48px; /* Ajusta el tamaño del icono según lo necesites */
-}
-
-
