@@ -23,30 +23,63 @@
 </head>
 
 <header id="header">
-  <div class='top'></div>
-  <nav>
-      <ul>
-          <li class="left-align mdb">Logo</li>
-          <li class="left-align mdb">MADRID DE BOLSILLO</li>
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#">Acerca de</a></li>
-          <li><a href="#">Servicios</a></li>
-          <li><a href="#">Productos</a></li>
-          <li><a href="#">Contacto</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-user"></i> <span class="caret"></span>
+  <div class="top"></div>
+  <nav class="navbar bg-light rounded">
+    <div class="container">
+      <a class="fa fa-map-location navbar-brand" href="/index"> M€B</a>
+      <span class="navbar-text">MADRID DE BOLSILLO</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"  aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="fa fa-house nav-link" href="/index"> Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="fa fa-circle-question nav-link" href="/acerca"> Acerca de</a>
+          </li>
+          <li class="nav-item">
+            <a class="fa fa-id-card-clip nav-link" href="/contacto"> Contacto</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <% if (user && user.name) { %>
+                <i class="fa fa-user"> <%= user.name %> </i>
+              <% } else { %>
+                <i class="fa fa-user"> Invitado </i>
+              <% } %>
             </a>
-            <ul class="dropdown-menu">
-                <li><a href="/login">Iniciar Sesión</a></li>
-                <li><a href="/login">Registrarse</a></li>
-                <li><a href="/logout">Cerrar Sesión</a></li>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <% if (user) { %>
+                <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
+              <% } else { %>
+                <li><a class="dropdown-item" href="/login">Iniciar Sesión</a></li>
+                <li><a class="dropdown-item" href="/login">Registrarse</a></li>
+              <% } %>
             </ul>
-        </li>
-      </ul>
+          </li>
+
+          <% if (user && user.isAdmin) { %>
+            <li class="nav-item">
+              <a class="fa fa-user-shield nav-link" href="/admin"> Panel de Administrador</a>
+            </li>
+          <% } %>
+          
+        </ul>
+      </div>
+    </div>
   </nav>
-  <h4>Bienvenido: <%= user.name %> <%= user.surname %> (<%= user.email %>)</h4>
+  <% if (user) { %>
+    <h4>Bienvenido: <%= user.name %> <%= user.surname %> (<%= user.email %>)</h4>
+  <% } else { %>
+    <h4>Bienvenido. ¿Aún no te has creado un usuario? Inicia sesión o regístrate ya</h4>
+  <% } %>
 </header>
+
+
+
+
 
 
 

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <% include header %>
+</head>
+
+<body>
+
+	<div style="text-align: center;">
+		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur repudiandae delectus, accusantium dolore, consectetur dolorem eos quo et odio laboriosam natus mollitia tempore cumque sapiente impedit consequuntur repellendus praesentium labore.</p>
+	</div>
+	
+	<main id="main-content">
+		<div id="circle-container">
+		  <div class="circle" data-category="Restauración"><i class="fas fa-utensils"></i></div>
+		  <div class="circle" data-category="Viajes"><i class="fas fa-plane"></i></div>
+		  <div class="circle" data-category="Naturaleza"><i class="fas fa-tree"></i></div>
+		  <div class="circle" data-category="Deportes"><i class="fas fa-futbol"></i></div>
+		  <div class="circle" data-category="Ocio"><i class="fas fa-gamepad"></i></div>
+		  <div class="circle"><a href="/crear"><i class="fas fa-pencil-alt"></i></a></div>
+		</div>
+	  </main>
+	
+	<!-- MAPA -->
+	<div id="map-container" style="margin: 0 auto; width: 80%; border-radius: 10px; overflow: hidden;">
+		<div id="mapid" style="height: 800px;"></div>
+	</div>
+
+	<!-- JS - FILTRO CATEGORÍAS -->
+	<script>
+		let currentCategory = null;
+
+		document.querySelectorAll('.circle[data-category]').forEach(circle => {
+			circle.addEventListener('click', function() {
+				const category = this.getAttribute('data-category');
+
+				if (currentCategory === category) {
+					showAllMarkers();
+					currentCategory = null; 
+				} else {
+					showMarkersByCategory(category);
+					currentCategory = category; 
+				}
+			});
+		});
+
+		function showMarkersByCategory(category) {
+			markers.forEach(marker => {
+				const markerId = marker._leaflet_id;
+				const markerCategory = markerData[markerId].category;
+
+				if (markerCategory === category) {
+					mymap.addLayer(marker);
+				} else {
+					mymap.removeLayer(marker);
+				}
+			});
+		}
+
+		function showAllMarkers() {
+			markers.forEach(marker => {
+				mymap.addLayer(marker);
+			});
+		}
+	</script>
+	
+	<!-- CREAR PLAN -> OFFCANVAS -->
+	<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+		Crear nuevo plan
+	</button>
+
+	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-header">
+			<h5 class="offcanvas-title" id="offcanvasExampleLabel">Selecciona un plan</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+			<h6>Selecciona un plan:</h6>
+			<div class="dropdown">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+					Planes disponibles
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<li><a class="dropdown-item" href="#" id="Restauración">Restauración</a></li>
+					<li><a class="dropdown-item" href="#" id="Viajes">Viajes</a></li>
+					<li><a class="dropdown-item" href="#" id="Naturaleza">Naturaleza</a></li>
+					<li><a class="dropdown-item" href="#" id="Deportes">Deportes</a></li>
+					<li><a class="dropdown-item" href="#" id="Ocio">Ocio</a></li>
+					<li><a class="dropdown-item" href="#" id="Otro">Otro</a></li>
+				</ul>
+			</div>
+			<button class="btn btn-danger mt-3" id="deleteAllPlansBtn">Eliminar todos los planes</button>
+		</div>
+	</div>
+	
+	<!-- CONFIRMAR MARCADOR -->
+	<button class="btn btn-primary mt-3" id="confirmMarkerBtn" style="display: none;">Confirmar marcador</button>
+
+	<!-- SETUP DE MAPA Y MARCADORES -->
+	<script>
+
+		window.onload = function() {
+			loadMarkersFromDatabase();
+		};
+	
+	    var mymap = L.map('mapid').setView([40.41, -3.68], 13);
+
+		// mapa base (OpenStreetMap)
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '© OpenStreetMap contributors'
+		}).addTo(mymap);
+
+		var markers = [];
+		var markerConfirmed = false; 
+		var planSelected = false;    
+		var markerData = {};
+
+		// Objeto para almacenar información de cada marcador
+		var markerData = {};
+
+	</script>
+
+	<!-- JS - CAMBIAR MAPA BASE -->
+	<script>
+		var baseMaps = {
+			"OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '© OpenStreetMap contributors'
+			}),
+			"Google Maps": L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+				maxZoom: 20,
+				subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+			}),
+			"CartoDB Voyager": L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+			}),
+			"CartoDB Dark": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+			}),
+			//Para quien tenga MapBox que ponga su mapa
+			"Mapbox": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				attribution: 'Map data &copy; <a href="https://www.mapbox.com/">Mapbox</a> contributors, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 18,
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'your.mapbox.access.token'
+			}),
+			"Mapbox Satellite": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				attribution: 'Map data &copy; <a href="https://www.mapbox.com/">Mapbox</a> contributors, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 18,
+				id: 'mapbox/satellite-v9',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'your.mapbox.access.token'
+			})
+		};
+
+		// Añadir control de capas al mapa
+		L.control.layers(baseMaps).addTo(mymap);
+
+		// Guardar la selección del mapa base
+		var selectedBaseMap = localStorage.getItem('selectedBaseMap');
+
+		if (selectedBaseMap) {
+		baseMaps[selectedBaseMap].addTo(mymap);
+		} else {
+		baseMaps["OpenStreetMap"].addTo(mymap);
+		}
+
+		mymap.on('baselayerchange', function (event) {
+		localStorage.setItem('selectedBaseMap', event.name);
+		});
+
+	</script>
+	
+	<!-- SCRIPT DE "CREAR NUEVO PLAN" y OFFCANVAS -->
+	<script>
+	
+		// CREAR MARCADOR AL HACER CLIC EN EL MAPA
+		function createNewMarker(latlng) {
+			if (!markerConfirmed) { 
+				var selectedPlan = document.querySelector('.dropdown-item.active').id;
+				var icon;
+				switch(selectedPlan) {
+					case "Restauración":
+						icon = L.divIcon({
+							className: 'custom-div-icon',
+							html: "<i id='markerR' class='fas fa-utensils'></i>",
+							iconSize: [30, 30],
+							iconAnchor: [15, 15]
+						});
+						break;
+					case "Viajes":
+						icon = L.divIcon({
+							className: 'custom-div-icon',
+							html: "<i id='markerV' class='fas fa-plane'></i>",
+							iconSize: [30, 30],
+							iconAnchor: [15, 15]
+						});
+						break;
+					case "Naturaleza":
+						icon = L.divIcon({
+							className: 'custom-div-icon',
+							html: "<i id='markerN' class='fas fa-tree'></i>",
+							iconSize: [30, 30],
+							iconAnchor: [15, 15]
+						});
+						break;
+					case "Deportes":
+						icon = L.divIcon({
+							className: 'custom-div-icon',
+							html: "<i id='markerD' class='fas fa-futbol'></i>",
+							iconSize: [30, 30],
+							iconAnchor: [15, 15]
+						});
+						break;
+					case "Ocio":
+						icon = L.divIcon({
+							className: 'custom-div-icon',
+							html: "<i id='markerO' class='fas fa-gamepad'></i>",
+							iconSize: [30, 30],
+							iconAnchor: [15, 15]
+						});
+						break;
+					case "Otro":
+						icon = L.divIcon({
+							className: 'custom-div-icon',
+							html: "<i id='markerOt' class='fas fa-location-dot'></i>",
+							iconSize: [30, 30],
+							iconAnchor: [15, 15]
+						});
+						break;
+					default:
+						icon = L.divIcon({
+							className: 'custom-div-icon',
+							html: "<i id='marker' class='fas fa-map-marker'></i>",
+							iconSize: [30, 30],
+							iconAnchor: [15, 15]
+						});
+				}
+				
+				var marker = L.marker(latlng, {icon: icon}).addTo(mymap);
+				markers.push(marker);
+				var markerId = marker._leaflet_id;
+				
+				markerData[markerId] = {
+					title: "",
+					image: "",
+					info: "",
+					category: selectedPlan
+				};
+				
+				marker.on('click', function() {
+					openMarkerModal(marker);
+				});
+			}
+		}
+		
+		// Gestionar la selección de plan en el menú desplegable de "Planes disponibles"
+		var dropdownItems = document.querySelectorAll('.dropdown-item');
+		dropdownItems.forEach(function(item) {
+			item.addEventListener('click', function() {
+				dropdownItems.forEach(function(item) {
+					item.classList.remove('active');
+				});
+				this.classList.add('active');
+				planSelected = true; // Se ha seleccionado un plan
+				markerConfirmed = false; // Se resetea la confirmación de marcador
+			});
+		});
+
+		// Solo crear marcadores si se ha confirmado un plan
+		mymap.on('click', function(e) {
+			if (planSelected && !markerConfirmed) { // Verificar si un plan está seleccionado y el marcador está confirmado
+				createNewMarker(e.latlng);
+			}
+		});
+
+		// (MOSTRAR) CONFIRMAR MARCADOR - BOTÓN - después de hacer clic en "Crear nuevo plan"
+		document.querySelector('[data-bs-target="#offcanvasExample"]').addEventListener('click', function() {
+			document.getElementById('confirmMarkerBtn').style.display = 'block'; 
+			planSelected = false; // Resetear la selección de plan
+		});
+		
+		// (OCULTAR) CONFIRMAR MARCADOR - BOTÓN
+		document.getElementById('confirmMarkerBtn').addEventListener('click', function() {
+			markerConfirmed = true;
+			document.getElementById('confirmMarkerBtn').style.display = 'none';
+			saveMarkersToDatabase(); 
+		});
+
+
+	    // ELIMINAR TODOS LOS PLANES
+		document.getElementById('deleteAllPlansBtn').addEventListener('click', async function() {
+			document.getElementById('deleteAllPlansBtn').addEventListener('click', function() {
+			var confirmation = confirm("¿Estás seguro de que quieres eliminar todos tus planes?");
+			if (confirmation) {
+				markers.forEach(function(marker) {
+					marker.remove();
+				});
+				// reseteo
+				markers = [];
+				markerData = {};
+				saveMarkersToDatabase(); 
+			}
+		});
+		await saveMarkersToDatabase(); 
+		});
+	
+	</script>
+		
+	<!-- EDITAR MARCADOR -->
+	<div class="modal fade" id="markerModal" tabindex="-1" aria-labelledby="markerModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="markerModalLabel">Editar Marcador</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<!-- Form para editar el marcador -->
+					<form>
+						<div class="mb-3">
+							<label for="markerTitle">Título:</label>
+							<input type="text" class="form-control" id="markerTitle">
+						</div>
+						<div class="mb-3">
+							<label for="markerImage">Imagen:</label>
+							<input type="file" class="form-control" id="markerImage" accept="image/*">
+							<small class="form-text text-muted">Selecciona una imagen del buscador de archivos.</small>
+							<div id="previewContainer" style="margin-top: 10px;">
+								<img id="imagePreview" src="" alt="Preview" style="max-width: 100%; max-height: 200px; display: none;">
+							</div>
+						</div>
+						<div class="mb-3">
+							<label for="markerInfo">Información:</label>
+							<textarea class="form-control" id="markerInfo" rows="3"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="saveMarkerBtn">Guardar</button>
+					<button type="button" class="btn btn-danger" id="deleteMarkerBtn">Eliminar</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- SCRIPT - EDITAR MARCADOR -->
+	<script>
+
+		// Abrir un modal al hacer clic en un marcador
+		function openMarkerModal(marker) {
+			var markerId = marker._leaflet_id;
+			var markerInfo = markerData[markerId].info;
+			var markerTitle = markerData[markerId].title;
+			var markerImage = markerData[markerId].image;
+
+			document.getElementById('markerTitle').value = markerTitle;
+			document.getElementById('markerInfo').value = markerInfo;
+			document.getElementById('markerImage').value = "";
+
+			if (markerImage) {
+				document.getElementById('imagePreview').src = markerImage;
+				document.getElementById('imagePreview').style.display = 'block';
+			} else {
+				document.getElementById('imagePreview').style.display = 'none';
+			}
+
+			$('#markerModal').modal('show');
+			// Guardar la id del marcador actual
+			document.getElementById('saveMarkerBtn').setAttribute('data-marker-id', markerId);
+		}
+	
+	    // PARA VER LA IMAGEN 
+		document.getElementById('markerImage').addEventListener('change', function() {
+			var file = this.files[0];
+			if (file) {
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					document.getElementById('imagePreview').src = event.target.result;
+					document.getElementById('imagePreview').style.display = 'block';
+            };
+			
+            reader.readAsDataURL(file);
+			
+			} 
+			else {
+            document.getElementById('imagePreview').style.display = 'none';
+			}
+		});
+	
+		// GUARDAR - BOTÓN
+		document.getElementById('saveMarkerBtn').addEventListener('click', async function() {
+			var markerId = this.getAttribute('data-marker-id');
+			markerData[markerId].title = document.getElementById('markerTitle').value;
+			// Cambiado para guardar la imagen como base64
+			var file = document.getElementById('markerImage').files[0];
+			if (file) {
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					markerData[markerId].image = event.target.result;
+					 
+				};
+				reader.readAsDataURL(file);
+			} else {
+				saveMarkersToDatabase(); 
+			}
+			markerData[markerId].info = document.getElementById('markerInfo').value;
+			$('#markerModal').modal('hide');
+			saveMarkersToDatabase();
+		});
+
+		document.getElementById('saveMarkerBtn').addEventListener('click', async function() {
+			var markerId = this.getAttribute('data-marker-id');
+			markerData[markerId].title = document.getElementById('markerTitle').value;
+			// Cambiado para guardar la imagen como base64
+			var file = document.getElementById('markerImage').files[0];
+			if (file) {
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					markerData[markerId].image = event.target.result;
+					markerData[markerId].info = document.getElementById('markerInfo').value; 
+					$('#markerModal').modal('hide');
+					saveMarkersToDatabase(); 
+				};
+				reader.readAsDataURL(file);
+			} else {
+				markerData[markerId].info = document.getElementById('markerInfo').value;
+				$('#markerModal').modal('hide');
+				saveMarkersToDatabase(); 
+			}
+		});
+
+
+		// ELIMINAR - BOTÓN
+		document.getElementById('deleteMarkerBtn').addEventListener('click', async function() {
+			var markerId = document.getElementById('saveMarkerBtn').getAttribute('data-marker-id');
+			var markerIndex = markers.findIndex(function(m) {
+				return m._leaflet_id === parseInt(markerId);
+			});
+			if (markerIndex !== -1) {
+				markers[markerIndex].remove();
+				markers.splice(markerIndex, 1);
+				delete markerData[markerId];
+				saveMarkersToDatabase(); 
+			}
+			$('#markerModal').modal('hide');
+		});
+
+	</script>
+	
+	<!-- GUARDAR Y CARGAR MARCADORES DE USUSARIO -->
+	<script>
+
+		// Guardar marcadores en la base de datos
+		async function saveMarkersToDatabase() {
+			const response = await fetch('/markers/save', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					markers: markers.map(marker => {
+						const markerId = marker._leaflet_id;
+						return {
+							latlng: marker.getLatLng(),
+							data: {
+								...markerData[markerId],
+								category: markerData[markerId].category,
+								title: markerData[markerId].title, // Guardar el título del marcador
+								image: markerData[markerId].image, // Guardar la imagen del marcador
+								info: markerData[markerId].info // Guardar la información del marcador
+							}
+						};
+					})
+				})
+			});
+			if (response.ok) {
+				console.log('Marcadores guardados con éxito');
+			} else {
+				console.error('Error al guardar los marcadores');
+			}
+		}
+
+		// Cargar marcadores desde la base de datos
+		async function loadMarkersFromDatabase() {
+			const response = await fetch('/markers/load');
+			if (response.ok) {
+				const savedMarkers = await response.json();
+				savedMarkers.forEach(marker => {
+					const icon = getIconByCategory(marker.data.category); // Asegúrate de que category esté en marker.data
+					const newMarker = L.marker(marker.latlng, { icon }).addTo(mymap);
+					markers.push(newMarker);
+					markerData[newMarker._leaflet_id] = marker.data;
+					
+					// Añade el evento de clic para editar el marcador
+					newMarker.on('click', function() {
+						openMarkerModal(newMarker);
+					});
+				});
+			} else {
+				console.error('Error al cargar los marcadores');
+			}
+		}
+
+
+		// Función para obtener el icono basado en la categoría
+		function getIconByCategory(category) {
+			let icon;
+			switch(category) {
+				case "Restauración":
+					icon = L.divIcon({
+						className: 'custom-div-icon',
+						html: "<i id='markerR' class='fas fa-utensils'></i>",
+						iconSize: [30, 30],
+						iconAnchor: [15, 15]
+					});
+					break;
+				case "Viajes":
+					icon = L.divIcon({
+						className: 'custom-div-icon',
+						html: "<i id='markerV' class='fas fa-plane'></i>",
+						iconSize: [30, 30],
+						iconAnchor: [15, 15]
+					});
+					break;
+				case "Naturaleza":
+					icon = L.divIcon({
+						className: 'custom-div-icon',
+						html: "<i id='markerN' class='fas fa-tree'></i>",
+						iconSize: [30, 30],
+						iconAnchor: [15, 15]
+					});
+					break;
+				case "Deportes":
+					icon = L.divIcon({
+						className: 'custom-div-icon',
+						html: "<i id='markerD' class='fas fa-futbol'></i>",
+						iconSize: [30, 30],
+						iconAnchor: [15, 15]
+					});
+					break;
+				case "Ocio":
+					icon = L.divIcon({
+						className: 'custom-div-icon',
+						html: "<i id='markerO' class='fas fa-gamepad'></i>",
+						iconSize: [30, 30],
+						iconAnchor: [15, 15]
+					});
+					break;
+				case "Otro":
+					icon = L.divIcon({
+						className: 'custom-div-icon',
+						html: "<i id='markerOt' class='fas fa-location-dot'></i>",
+						iconSize: [30, 30],
+						iconAnchor: [15, 15]
+					});
+					break;
+				default:
+					icon = L.divIcon({
+						className: 'custom-div-icon',
+						html: "<i id='marker' class='fas fa-map-marker'></i>",
+						iconSize: [30, 30],
+						iconAnchor: [15, 15]
+					});
+			}
+			return icon;
+		}
+
+		// Llamar a la función para cargar los marcadores cuando la página se carga
+		window.onload = function() {
+			loadMarkersFromDatabase();
+		};
+
+	</script>
+
+	<!-- GENERAR QR -->
+	<div class="box">
+		<div class="qr-header">
+			<h1>Generate QR Code</h1>
+		</div>
+		<div class="qr-body"></div>
+		<div class="qr-footer">
+			<a href="" id="generateBtn">Generate</a>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+	<!-- JS - QR -->
+	<script>
+		const generateBtn = document.getElementById('generateBtn');
+		const qrContainer = document.querySelector('.qr-body');
+		const homepageURL = 'https://tu-pagina-principal.com'; // Reemplaza con la URL de tu página principal
+		const qrSize = 200; // Tamaño fijo del QR
+
+		generateBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+			qrContainer.innerHTML = "";
+			new QRCode(qrContainer, {
+				text: homepageURL,
+				width: qrSize,
+				height: qrSize,
+				colorLight: "#fff",
+				colorDark: "#000",
+			});
+		});
+	</script>
+
+	<style>
+		:root {
+			--primary-color: #00b894;
+			--secondary-color: #ffffff;
+			--border-radius: 12px;
+			--border-color: #2ecc71;
+		}
+
+		.box {
+			background-color: var(--primary-color);
+			padding: 30px;
+			width: 400px;
+			border-radius: var(--border-radius);
+			box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+			text-align: center;
+			margin-left: auto;
+		}
+
+		.qr-header h1 {
+			font-size: 26px;
+			color: var(--secondary-color);
+			margin-bottom: 24px;
+			text-transform: uppercase;
+		}
+
+		.qr-footer {
+			margin-top: 24px;
+		}
+
+		.qr-footer a {
+			background-color: var(--secondary-color);
+			text-decoration: none;
+			font-size: 20px;
+			padding: 14px 36px;
+			margin-inline: 2px;
+			color: var(--primary-color);
+			font-weight: 600;
+			border-radius: var(--border-radius);
+			transition: background-color 0.3s ease, color 0.3s ease;
+		}
+
+		.qr-footer a:hover {
+			background-color: var(--primary-color);
+			color: var(--secondary-color);
+		}
+
+		.qr-body {
+			display: grid;
+			place-items: center;
+			padding: 20px;
+		}
+	</style>
+
+</body>
+
+<% include footer %>
+</body>
+</html>

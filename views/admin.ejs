@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+</head>
+<body>
+  <h1 class="admin"><strong>PÁGINA DEL ADMIN</strong> - YAIZA Y MARCOS</h1>
+  <div class="json">
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" id="jsonFile" name="jsonFile" accept=".json">
+      <button type="submit">Upload JSON</button>
+    </form>
+  </div>
+
+  <a href="/" class="Volver">Volver a la página principal</a>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const fileInput = document.getElementById('jsonFile');
+      const formData = new FormData();
+      formData.append('jsonFile', fileInput.files[0]);
+
+      const response = await fetch('/admin/upload-json', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        alert('Marcadores añadidos correctamente a la BD');
+      } else {
+        alert('Error añadiendo los marcadores');
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+body{
+	font-family: 'Poppins', sans-serif;
+	font-weight: 300;
+	line-height: 1.7;
+	color: #ffeba7;
+	background-color: #1f2029;
+}
+
+.json {
+  position: absolute;
+  top: 37%; 
+  left: 39%; 
+}
+
+.admin {
+  position: absolute;
+  top: 20%; /* Margen superior */
+  left: 50%; /* Centra horizontalmente */
+  transform: translateX(-50%); /* Corrige la posición */
+  font-size: 36px; /* Tamaño de la fuente */
+  color: transparent; /* Color transparente para el texto */
+  -webkit-text-stroke: 2px #ffeba7; /* Añade contorno al texto */
+}
+
+/* volver boton */
+.Volver{
+	padding: 0.8em 1.8em;
+	border-radius: 8px;
+	background-color: transparent;
+	color:#ffeba7;
+	border:2px solid #ffeba7;
+	font-size: 16px;
+	cursor: pointer;
+	z-index: 1;
+	transition: 0.3s;
+	overflow:hidden ;
+	position: absolute; /* Cambiado a position: absolute */
+	top: 70%; /* Centra verticalmente */
+	left: 50%; /* Centra horizontalmente */
+	transform: translate(-50%, -50%); /* Corrige la posición */
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.Volver:before{
+	content:'';
+	width: 0;
+	height: 300%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transition: 0.5s ease;
+	transform: translate(-50%,-50%) rotate(45deg);
+	display: block;
+	z-index: -1;
+	background-color: #ffeba7;
+}
+.Volver:hover::before{
+	width: 105%;
+}
+.Volver:hover{
+	color:#111;
+}
+
+
+
+</style>

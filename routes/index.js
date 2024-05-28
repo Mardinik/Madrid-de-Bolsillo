@@ -3,6 +3,7 @@ var router = express.Router();
 var o2x = require('object-to-xml');
 var mongoose = require('mongoose');
 var Personaje = require('../models/personaje'); 
+var Marker = require('../models/Marker');
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
@@ -22,6 +23,16 @@ function isLoggedIn (req, res, next) {
   }
   res.redirect('/login');
 }
+
+// LOS PLANES INCLUÍDOS EN JSON APARECERÁN EN EL MAPA DEL FRONTEND
+router.get('/', async function(req, res, next) {
+  try {
+    const markers = await Marker.find({});
+    res.render('index', { title: 'Madrid de Bolsillo', markers, user: req.user });
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Ruta GET para las páginas de personaje
 router.get('/character/:_id', isLoggedIn, async function(req, res, next) {

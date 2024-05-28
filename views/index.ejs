@@ -1,357 +1,203 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <% include header %>
-</head>
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<% include header %>
 <body>
+  <h1><%= title %></h1>
+  <h3><strong>PÁGINA PRINCIPAL</strong></h3>
 
-<div style="text-align: center;">
+  <div style="text-align: center;">
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur repudiandae delectus, accusantium dolore, consectetur dolorem eos quo et odio laboriosam natus mollitia tempore cumque sapiente impedit consequuntur repellendus praesentium labore.</p>
-</div>
+  </div>
 
-<main id="main-content">
+  <main id="main-content">
     <div id="circle-container">
-        <div class="circle"><i class="fas fa-utensils"></i></div>
-        <div class="circle"><i class="fas fa-plane"></i></div>
-        <div class="circle"><i class="fas fa-tree"></i></div>
-        <div class="circle"><i class="fas fa-futbol"></i></div>
-        <div class="circle"><i class="fas fa-gamepad"></i></div>
-        <div class="circle"><i class="fas fa-pencil-alt"></i></div>
+      <div class="circle" data-category="Restauración"><i class="fas fa-utensils"></i></div>
+      <div class="circle" data-category="Viajes"><i class="fas fa-plane"></i></div>
+      <div class="circle" data-category="Naturaleza"><i class="fas fa-tree"></i></div>
+      <div class="circle" data-category="Deportes"><i class="fas fa-futbol"></i></div>
+      <div class="circle" data-category="Ocio"><i class="fas fa-gamepad"></i></div>
+      <div class="circle" data-category="Gratis"><i class="fas fa-euro-sign"></i></div>
+      <div class="circle"><a href="/crear"><i class="fas fa-pencil-alt"></i></a></div>
     </div>
-</main>
+  </main>
 
-<!-- MAPA -->
-<div id="map-container" style="margin: 0 auto; width: 80%; border-radius: 10px; overflow: hidden;">
+  <!-- MAPA -->
+  <div id="map-container" style="position: relative; margin: 0 auto; width: 80%; border-radius: 10px; overflow: hidden;">
     <div id="mapid" style="height: 800px;"></div>
-</div>
+  </div>
 
-<!-- CREAR PLAN -> OFFCANVAS -->
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-    Crear nuevo plan
-</button>
+  <!-- JS - FILTRO CATEGORÍAS -->
+  <script>
+    let selectedCategory = null;
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Selecciona un plan</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <h6>Selecciona un plan:</h6>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                Planes disponibles
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#" id="Restauración">Restauración</a></li>
-                <li><a class="dropdown-item" href="#" id="Viajes">Viajes</a></li>
-                <li><a class="dropdown-item" href="#" id="Naturaleza">Naturaleza</a></li>
-                <li><a class="dropdown-item" href="#" id="Deportes">Deportes</a></li>
-                <li><a class="dropdown-item" href="#" id="Ocio">Ocio</a></li>
-                <li><a class="dropdown-item" href="#" id="Otro">Otro</a></li>
-            </ul>
-        </div>
-        <button class="btn btn-danger mt-3" id="deleteAllPlansBtn">Eliminar todos los planes</button>
-    </div>
-</div>
+    function filterMarkersByCategory(category) {
+      if (selectedCategory === category) {
+        selectedCategory = null;
+        fetchMarkers();
+      } else {
+        mymap.eachLayer(function (layer) {
+          if (layer instanceof L.Marker) {
+            mymap.removeLayer(layer);
+          }
+        });
 
-<script>
-    // ELIMINAR PLAN  
-    document.getElementById('deleteAllPlansBtn').addEventListener('click', function() {
-        var confirmation = confirm("¿Estás seguro de que quieres eliminar todos tus planes?");
-        if (confirmation) {
-            markers.forEach(function(marker) {
-                marker.remove();
+        fetch('/api/markers')
+          .then(response => response.json())
+          .then(markers => {
+            markers.forEach(marker => {
+              if (category === 'Gratis' && marker.plan === 'gratis' || marker.category === category) {
+                const customIcon = createCustomIcon(marker.category, marker.plan);
+                L.marker([marker.latlng.lat, marker.latlng.lng], { icon: customIcon })
+                  .addTo(mymap)
+                  .bindPopup(createPopupContent(marker));
+              }
             });
-            // reseteo
-            markers = [];
-            markerData = {};
-            // Esto guarda los cambios en el almacenamiento local para que el usuario mantenga su "registro" o "progreso" de marcadores, por así decirlo.
-            saveMarkersToLocalStorage();
-        }
+          })
+          .catch(err => console.error(err));
+
+        selectedCategory = category;
+      }
+    }
+
+    document.querySelectorAll('.circle').forEach(circle => {
+      circle.addEventListener('click', function () {
+        const category = this.dataset.category;
+        filterMarkersByCategory(category);
+      });
     });
-</script>
 
-<!-- CONFIRMAR MARCADOR -->
-<button class="btn btn-primary mt-3" id="confirmMarkerBtn" style="display: none;">Confirmar marcador</button>
+    function fetchMarkers() {
+      fetch('/api/markers')
+        .then(response => response.json())
+        .then(markers => {
+          markers.forEach(marker => {
+            const customIcon = createCustomIcon(marker.category, marker.plan);
+            L.marker([marker.latlng.lat, marker.latlng.lng], { icon: customIcon })
+              .addTo(mymap)
+              .bindPopup(createPopupContent(marker));
+          });
+        })
+        .catch(err => console.error(err));
+    }
 
-<!-- EDITAR MARCADOR -->
-<div class="modal fade" id="markerModal" tabindex="-1" aria-labelledby="markerModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="markerModalLabel">Editar Marcador</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Form para editar el marcador -->
-                <form>
-                    <div class="mb-3">
-                        <label for="markerTitle">Título:</label>
-                        <input type="text" class="form-control" id="markerTitle">
-                    </div>
-                    <div class="mb-3">
-                        <label for="markerImage">Imagen:</label>
-                        <input type="file" class="form-control" id="markerImage" accept="image/*">
-                        <small class="form-text text-muted">Selecciona una imagen del buscador de archivos.</small>
-                        <div id="previewContainer" style="margin-top: 10px;">
-                            <img id="imagePreview" src="" alt="Preview" style="max-width: 100%; max-height: 200px; display: none;">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="markerInfo">Información:</label>
-                        <textarea class="form-control" id="markerInfo" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="saveMarkerBtn">Guardar</button>
-                <button type="button" class="btn btn-danger" id="deleteMarkerBtn">Eliminar</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+    function createPopupContent(marker) {
+      return `
+        <div style="text-align: center;">
+          <h3 style="margin: 0; color: #333;">${marker.title}</h3>
+          <p style="font-size: 0.9em; color: #666;">${marker.info}</p>
+          <img src="${marker.image}" alt="${marker.title}" style="width: 100%; max-width: 200px; height: auto; border-radius: 5px;">
+          <a href="${marker.masInfo}" target="_blank">
+            <button style="padding: 5px 10px; margin-top: 10px; background-color: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;">Más info</button>
+          </a>
+        </div>`;
+    }
+  </script>
 
-<script>
+  <!-- JS - MAPA -->
+  <script>
     var mymap = L.map('mapid').setView([40.41, -3.68], 13);
 
-    // mapa base (OpenStreetMap)
+    const iconMapping = {
+      'Restauración': { icon: 'fas fa-utensils', color: '#ef476f' },
+      'Viajes': { icon: 'fas fa-plane', color: '#118ab2' },
+      'Naturaleza': { icon: 'fas fa-tree', color: '#43aa8b' },
+      'Deportes': { icon: 'fas fa-futbol', color: '#f9844a' },
+      'Ocio': { icon: 'fas fa-gamepad', color: '#8338ec' },
+      'sin asignar': { icon: 'fas fa-map-marker-alt', color: '#577590' }
+    };
+
+    function createCustomIcon(category, plan) {
+      const { icon, color } = iconMapping[category] || iconMapping['sin asignar'];
+      const boxShadowStyle = plan === 'gratis' ? 'box-shadow: 0 0 0 3.5px #ffd60a;' : '';
+      const iconColorStyle = plan === 'gratis' ? `color: #ffd60a;` : '';
+      return L.divIcon({
+        html: `<div class="icon-background" style="background-color: ${color}; ${boxShadowStyle}"><i class="${icon}" style="${iconColorStyle} font-size: 1.5em;"></i></div>`,
+        className: 'map-icon'
+      });
+    }
+
+    fetchMarkers();
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+      attribution: '© OpenStreetMap contributors'
     }).addTo(mymap);
+  </script>
 
-    var markers = [];
-    var markerConfirmed = false;
+	<!-- JS - CAMBIAR MAPA BASE -->
+	<script>
+		var baseMaps = {
+			"OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '© OpenStreetMap contributors'
+			}),
+			"Google Maps": L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+				maxZoom: 20,
+				subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+			}),
+			"CartoDB Voyager": L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+			}),
+			"CartoDB Dark": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+			}),
+			//Para quien tenga MapBox que ponga su mapa
+			"Mapbox": L.tileLayer('mapbox://styles/yaixitta/clb9k0p36006a14ntox4mlywi', {
+				attribution: 'Map data &copy; <a href="https://www.mapbox.com/">Mapbox</a> contributors, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 18,
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'your.mapbox.access.token'
+			}),
+			"Mapbox Satellite": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				attribution: 'Map data &copy; <a href="https://www.mapbox.com/">Mapbox</a> contributors, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 18,
+				id: 'mapbox/satellite-v9',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'your.mapbox.access.token'
+			})
+		};
 
-    // Objeto para almacenar información de cada marcador
-    var markerData = {};
+		// Añadir control de capas al mapa
+		L.control.layers(baseMaps).addTo(mymap);
 
-    // Abrir un modal al hacer clic en un marcador
-    function openMarkerModal(marker) {
-        var markerId = marker._leaflet_id;
-        var markerInfo = markerData[markerId].info;
-        var markerTitle = markerData[markerId].title;
-        var markerImage = markerData[markerId].image;
+    // Guardar la selección del mapa base
+    var selectedBaseMap = localStorage.getItem('selectedBaseMap');
 
-        document.getElementById('markerTitle').value = markerTitle;
-        document.getElementById('markerInfo').value = markerInfo;
-        document.getElementById('markerImage').value = "";
+    if (selectedBaseMap) {
+      baseMaps[selectedBaseMap].addTo(mymap);
+    } else {
+      baseMaps["OpenStreetMap"].addTo(mymap);
+    }
+    mymap.on('baselayerchange', function (event) {
+      localStorage.setItem('selectedBaseMap', event.name);
+    });
 
-        if (markerImage) {
-            document.getElementById('imagePreview').src = markerImage;
-            document.getElementById('imagePreview').style.display = 'block';
-        } else {
-            document.getElementById('imagePreview').style.display = 'none';
-        }
+	</script>
 
-        $('#markerModal').modal('show');
-        // Guardar la id del marcador actual
-        document.getElementById('saveMarkerBtn').setAttribute('data-marker-id', markerId);
+  <!-- ESTILOS ICONOS -->
+  <style>
+    .map-icon {
+      font-size: 1em;
+      text-align: center;
     }
 
-    // PARA VER LA IMAGEN 
-    document.getElementById('markerImage').addEventListener('change', function() {
-        var file = this.files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById('imagePreview').src = event.target.result;
-                document.getElementById('imagePreview').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        } else {
-            document.getElementById('imagePreview').style.display = 'none';
-        }
-    });
-
-    // GUARDAR - BOTÓN
-    document.getElementById('saveMarkerBtn').addEventListener('click', function() {
-        var markerId = this.getAttribute('data-marker-id');
-        markerData[markerId].title = document.getElementById('markerTitle').value;
-        // Cambiado para guardar la imagen como base64
-        var file = document.getElementById('markerImage').files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                markerData[markerId].image = event.target.result;
-                saveMarkersToLocalStorage(); // Guardar los marcadores después de cargar la imagen
-            };
-            reader.readAsDataURL(file);
-        }
-        markerData[markerId].info = document.getElementById('markerInfo').value;
-        $('#markerModal').modal('hide');
-    });
-
-    // ELIMINAR - BOTÓN
-    document.getElementById('deleteMarkerBtn').addEventListener('click', function() {
-        var markerId = document.getElementById('saveMarkerBtn').getAttribute('data-marker-id');
-        var markerIndex = markers.findIndex(function(marker) {
-            return marker._leaflet_id == markerId;
-        });
-        
-        if (markerIndex !== -1) {
-            var marker = markers[markerIndex];
-            marker.remove();
-            // Marcar el marcador como eliminado
-            marker._deleted = true;
-            // Eliminar la información del marcador del objeto markerData
-            delete markerData[markerId];
-            // Ocultar el modal
-            $('#markerModal').modal('hide');
-            // Eliminar el marcador del array markers
-            markers.splice(markerIndex, 1);
-            saveMarkersToLocalStorage(); 
-        }
-    });
-
-    // CONFIRMAR MARCADOR - BOTÓN
-    document.getElementById('confirmMarkerBtn').addEventListener('click', function() {
-        markerConfirmed = false; 
-        document.getElementById('confirmMarkerBtn').style.display = 'none'; // Oculta "Confirmar marcador"
-        console.log("Marcador confirmado");
-        saveMarkersToLocalStorage(); 
-    });
-
-    // PARA CARGAR MARCADORES EN EL ALMACENAMIENTO LOCAL
-    function loadMarkersFromLocalStorage() {
-        var savedMarkers = JSON.parse(localStorage.getItem('markers'));
-        if (savedMarkers) {
-            savedMarkers.forEach(function(savedMarker) {
-                var marker = L.marker(savedMarker.latlng).addTo(mymap);
-                markers.push(marker);
-                markerData[marker._leaflet_id] = savedMarker.data;
-                marker.on('click', function() {
-                    openMarkerModal(marker);
-                });
-            });
-        }
-        markerConfirmed = false;
+    .icon-background {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
     }
 
-    // PARA GUARDAR MARCADORES EN EL ALMACENAMIENTO LOCAL
-    function saveMarkersToLocalStorage() {
-        var activeMarkers = markers.filter(function(marker) {
-            return !marker._deleted; // Filtrar los marcadores que no han sido eliminados
-        });
-
-        var markersToSave = activeMarkers.map(function(marker) {
-            return {
-                latlng: marker.getLatLng(),
-                data: markerData[marker._leaflet_id]
-            };
-        });
-        localStorage.setItem('markers', JSON.stringify(markersToSave));
+    .map-icon i {
+      color: white;
     }
+  </style>
 
-    loadMarkersFromLocalStorage();
-
-    // CREAR MARCADORES
-    mymap.on('click', function(e) {
-        if (markerConfirmed) { // Solo crear marcadores si se ha confirmado un plan
-            createNewMarker(e.latlng);
-        }
-    });
-
-    // CREAR MARCADOR AL HACER CLIC EN EL MAPA
-    function createNewMarker(latlng) {
-        if (markerConfirmed) { 
-            var selectedPlan = document.querySelector('.dropdown-item.active').id;
-            var icon;
-            switch(selectedPlan) {
-                case "Restauración":
-                    icon = L.divIcon({
-                        className: 'custom-div-icon',
-                        html: "<i class='fas fa-utensils'></i>",
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    });
-                    break;
-                case "Viajes":
-                    icon = L.divIcon({
-                        className: 'custom-div-icon',
-                        html: "<i class='fas fa-plane'></i>",
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    });
-                    break;
-                case "Naturaleza":
-                    icon = L.divIcon({
-                        className: 'custom-div-icon',
-                        html: "<i class='fas fa-tree'></i>",
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    });
-                    break;
-                case "Deportes":
-                    icon = L.divIcon({
-                        className: 'custom-div-icon',
-                        html: "<i class='fas fa-futbol'></i>",
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    });
-                    break;
-                case "Ocio":
-                    icon = L.divIcon({
-                        className: 'custom-div-icon',
-                        html: "<i class='fas fa-gamepad'></i>",
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    });
-                    break;
-                case "Otro":
-                    icon = L.divIcon({
-                        className: 'custom-div-icon',
-                        html: "<i class='fas fa-pencil-alt'></i>",
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    });
-                    break;
-                default:
-                    icon = L.divIcon({
-                        className: 'custom-div-icon',
-                        html: "<i class='fas fa-map-marker'></i>",
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    });
-            }
-            
-            var marker = L.marker(latlng, {icon: icon}).addTo(mymap);
-            markers.push(marker);
-            var markerId = marker._leaflet_id;
-            
-            markerData[markerId] = {
-                title: "Nuevo marcador",
-                image: "",
-                info: ""
-            };
-            
-            marker.on('click', function() {
-                openMarkerModal(marker);
-            });
-        }
-    }
-
-    // Gestionar la selección de plan en el menú desplegable
-    var dropdownItems = document.querySelectorAll('.dropdown-item');
-    dropdownItems.forEach(function(item) {
-        item.addEventListener('click', function() {
-            dropdownItems.forEach(function(item) {
-                item.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    });
-
-    // Mostrar el botón "Confirmar marcador" después de hacer clic en "Crear nuevo plan"
-    document.querySelector('[data-bs-target="#offcanvasExample"]').addEventListener('click', function() {
-        document.getElementById('confirmMarkerBtn').style.display = 'block';
-        markerConfirmed = true; 
-    });
-
-</script>
-
-<% include footer %>
+  <% include footer %>
 </body>
 </html>
