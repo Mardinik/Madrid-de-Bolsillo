@@ -34,56 +34,6 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-// Ruta GET para las páginas de personaje
-router.get('/character/:_id', isLoggedIn, async function(req, res, next) {
-  try {
-    var characterID = req.params._id;
-    var personaje = await Personaje.findById(characterID).exec();
-    if (personaje) {
-      res.render('personaje', { title: 'Página de personaje', personaje: personaje });
-    } else {
-      var err = new Error('Character Not Found');
-      err.status = 404;
-      next(err);
-    }
-  } catch (err) {
-    next(err);
-  }
-});
-
-// Crear personaje
-router.post('/', async function(req, res, next) { 
-  try {
-    var nombre = req.body.nombre; 
-    var fuerza = req.body.fuerza; 
-    var faccion = req.body.faccion; 
-
-    var nuevoPersonaje = new Personaje({
-      Nombre: nombre,
-      Fuerza: fuerza,
-      Faccion: faccion
-    });
-
-    await nuevoPersonaje.save();
-    res.redirect('/');
-  } catch (err) {
-    next(err);
-  }
-});
-
-// Eliminar personaje
-router.post('/character/:ID', async function(req, res, next) { 
-  try {
-    var characterID = req.params.ID;
-    await Personaje.findOneAndDelete({_id: characterID});
-    res.redirect('/');
-  } catch (err) {
-    next(err);
-  }
-});
-
-
-
 // Ruta GET para XML
 router.get('/xml', async (req, res, next) => {
   var personajes = await Personaje.find();

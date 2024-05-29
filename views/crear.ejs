@@ -8,24 +8,26 @@
 
 <body>
 
-	<div style="text-align: center;">
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur repudiandae delectus, accusantium dolore, consectetur dolorem eos quo et odio laboriosam natus mollitia tempore cumque sapiente impedit consequuntur repellendus praesentium labore.</p>
-	</div>
-	
-	<main id="main-content">
-		<div id="circle-container">
-		  <div class="circle" data-category="Restauración"><i class="fas fa-utensils"></i></div>
-		  <div class="circle" data-category="Viajes"><i class="fas fa-plane"></i></div>
-		  <div class="circle" data-category="Naturaleza"><i class="fas fa-tree"></i></div>
-		  <div class="circle" data-category="Deportes"><i class="fas fa-futbol"></i></div>
-		  <div class="circle" data-category="Ocio"><i class="fas fa-gamepad"></i></div>
-		  <div class="circle"><a href="/crear"><i class="fas fa-pencil-alt"></i></a></div>
+	<div id="Contenedor1">
+		<div style="text-align: center;">
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur repudiandae delectus, accusantium dolore, consectetur dolorem eos quo et odio laboriosam natus mollitia tempore cumque sapiente impedit consequuntur repellendus praesentium labore.</p>
 		</div>
-	  </main>
-	
-	<!-- MAPA -->
-	<div id="map-container" style="margin: 0 auto; width: 80%; border-radius: 10px; overflow: hidden;">
-		<div id="mapid" style="height: 800px;"></div>
+		
+		<main id="main-content">
+			<div id="circle-container">
+			  <div class="circle" data-category="Restauración"><i class="fas fa-utensils"></i></div>
+			  <div class="circle" data-category="Viajes"><i class="fas fa-plane"></i></div>
+			  <div class="circle" data-category="Naturaleza"><i class="fas fa-tree"></i></div>
+			  <div class="circle" data-category="Deportes"><i class="fas fa-futbol"></i></div>
+			  <div class="circle" data-category="Ocio"><i class="fas fa-gamepad"></i></div>
+			  <div class="circle"><a href="/crear"><i class="fas fa-pencil-alt"></i></a></div>
+			</div>
+		  </main>
+		
+		<!-- MAPA -->
+		<div id="map-container" style="margin: 0 auto; width: 80%; border-radius: 10px; overflow: hidden;">
+			<div id="mapid" style="height: 800px;"></div>
+		</div>
 	</div>
 
 	<!-- JS - FILTRO CATEGORÍAS -->
@@ -67,8 +69,8 @@
 	</script>
 	
 	<!-- CREAR PLAN -> OFFCANVAS -->
-	<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-		Crear nuevo plan
+	<button class="editarPlan" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+		<i class="fas fa-edit"></i> EDITAR PLANES	
 	</button>
 
 	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
@@ -579,91 +581,6 @@
 		};
 
 	</script>
-
-	<!-- GENERAR QR -->
-	<div class="box">
-		<div class="qr-header">
-			<h1>Generate QR Code</h1>
-		</div>
-		<div class="qr-body"></div>
-		<div class="qr-footer">
-			<a href="" id="generateBtn">Generate</a>
-		</div>
-	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-	<!-- JS - QR -->
-	<script>
-		const generateBtn = document.getElementById('generateBtn');
-		const qrContainer = document.querySelector('.qr-body');
-		const homepageURL = 'https://tu-pagina-principal.com'; // Reemplaza con la URL de tu página principal
-		const qrSize = 200; // Tamaño fijo del QR
-
-		generateBtn.addEventListener('click', (e) => {
-			e.preventDefault();
-			qrContainer.innerHTML = "";
-			new QRCode(qrContainer, {
-				text: homepageURL,
-				width: qrSize,
-				height: qrSize,
-				colorLight: "#fff",
-				colorDark: "#000",
-			});
-		});
-	</script>
-
-	<style>
-		:root {
-			--primary-color: #00b894;
-			--secondary-color: #ffffff;
-			--border-radius: 12px;
-			--border-color: #2ecc71;
-		}
-
-		.box {
-			background-color: var(--primary-color);
-			padding: 30px;
-			width: 400px;
-			border-radius: var(--border-radius);
-			box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-			text-align: center;
-			margin-left: auto;
-		}
-
-		.qr-header h1 {
-			font-size: 26px;
-			color: var(--secondary-color);
-			margin-bottom: 24px;
-			text-transform: uppercase;
-		}
-
-		.qr-footer {
-			margin-top: 24px;
-		}
-
-		.qr-footer a {
-			background-color: var(--secondary-color);
-			text-decoration: none;
-			font-size: 20px;
-			padding: 14px 36px;
-			margin-inline: 2px;
-			color: var(--primary-color);
-			font-weight: 600;
-			border-radius: var(--border-radius);
-			transition: background-color 0.3s ease, color 0.3s ease;
-		}
-
-		.qr-footer a:hover {
-			background-color: var(--primary-color);
-			color: var(--secondary-color);
-		}
-
-		.qr-body {
-			display: grid;
-			place-items: center;
-			padding: 20px;
-		}
-	</style>
 
 </body>
 

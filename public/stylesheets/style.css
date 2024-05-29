@@ -1,34 +1,52 @@
+/* Variables de colores */
 :root {
---clr-primary: teal;
---clr-secondary: crimson;
---bg-primary: #0d1a2d;
---bg-secondary: #14273e;
---text-primary: #fff;
---text-secondary: #ccc;
-}
-*,
-*::before,
-*::after {
-box-sizing: border-box;
-}
-* {
-margin: 0;
-font: inherit;
-}
-
-html {
-color-scheme: dark;
-}
-body {
-    font-family: system-ui, sans-serif;
+    --clr-primary: #14273e;
+    --clr-secondary: #ffeba7;
+    --bg-primary: #0d1a2d;
+    --bg-secondary: #14273e;
+    --text-primary: #ccc;
+    --text-secondary: #0d1a2d;
+  }
+  
+  /* Estilos generales */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  
+  * {
+    margin: 0;
+    font: inherit;
+  }
+  
+  html {
+    color-scheme: dark;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
     min-height: 100vh;
-    background-color: var(--bg-primary);
-    color: var(--text-secondary);
+    background-image: url('https://www.xtrafondos.com/wallpapers/atardecer-en-la-costa-10619.jpg');
+    background-size: cover;
+    background-position: center;
+    color: var(--text-primary);
     padding: 1%;
-}
-
-/* CSS personalizado para los iconos de los planes */
-.custom-div-icon {
+  }
+  
+  /* Contenedor principal */
+  #Contenedor1 {
+    background: rgba(13, 26, 45, 0.5); /* Opacidad 0.5 = 50% */
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* Añadir desenfoque de fondo */
+    background-image: url('ruta/de/tu/imagen.jpg'); /* Ruta de la imagen de fondo */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Estilos de los iconos */
+  .custom-div-icon {
     width: 80px;
     height: 80px;
     border-color: black;
@@ -36,37 +54,45 @@ body {
     text-align: center;
     line-height: 20px; 
     font-size: 24px; 
-}
-
-.fas {
+  }
+  
+  .fas {
     font-size: 40px; 
-}
-#markerR {
+  }
+  
+  /* Marcadores de estado */
+  #markerR {
     color: rgb(255, 0, 0);
     font-size: 20px;
-}
-#markerV {
+  }
+  
+  #markerV {
     color: rgb(0, 47, 255);
     font-size: 20px;
-}
-#markerN {
+  }
+  
+  #markerN {
     color: rgb(0, 148, 32);
     font-size: 20px;
-}
-#markerD {
+  }
+  
+  #markerD {
     color: rgb(255, 217, 0);
     font-size: 20px;
-}
-#markerO {
+  }
+  
+  #markerO {
     color: rgb(132, 0, 255);
     font-size: 20px;
-}
-#markerOt {
+  }
+  
+  #markerOt {
     color: rgb(255, 0, 157);
     font-size: 20px;
-}
-
-.circle {
+  }
+  
+  /* Estilos del círculo */
+  .circle {
     width: 80px; /* Aumenta el tamaño del contenedor del círculo para dejar espacio para el icono */
     height: 80px;
     display: inline-flex;
@@ -75,10 +101,60 @@ body {
     border-radius: 50%; /* Asegura que el contenedor sea un círculo */
     border: 4px solid #ccc; /* Añade un borde para destacar el círculo */
     margin: 10px; /* Añade un espacio entre los círculos */
-}
-
-#main-content {
+  }
+  
+  #main-content {
     display: flex;
     justify-content: center;
     height: 50%; /* Ajusta la altura según tus necesidades */
   }
+
+  .editarPlan {
+    margin-right: 3%;
+    position: absolute;
+    bottom: 20%; /* Ajusta la distancia desde la parte inferior */
+    right: 90%; /* Ajusta la distancia desde la derecha */
+    padding: 10px 20px; /* Ajusta el relleno del botón */
+    border: none; /* Elimina el borde del botón */
+    background-color: var(--clr-primary); /* Cambia el color de fondo del botón */
+    color: var(--text-primary); /* Cambia el color del texto del botón */
+    border-radius: 5px; /* Agrega bordes redondeados al botón */
+    font-size: 16px; /* Ajusta el tamaño del texto */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra al botón */
+    transition: background-color 0.3s; /* Agrega una transición suave al color de fondo */
+  }
+  
+  /* Cambia el color de fondo cuando el cursor está sobre el botón */
+  .editarPlan:hover {
+    background-color: var(--clr-secondary); 
+    color: var(--text-secondary); 
+  }
+  
+  /* Estilo del ícono dentro del botón */
+  .editarPlan i {
+    margin-right: 5px; /* Añade un pequeño margen a la derecha del ícono */
+  }
+  
+  #footer {
+    display: none; 
+    position: relative; 
+    margin-top: 20px; 
+  }
+
+  #VolverInicio {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
+  #VolverInicio:hover {
+    background-color: #ffeba7;
+    color: #1f2029;
+  }
+

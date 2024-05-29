@@ -21,8 +21,8 @@ var markersRouter = require('./routes/markers');
 
 var app = express();
 
-// Database setup
-var mongoDB = 'mongodb://localhost:27017/starwars';
+// CONEXIÓN A MONGO ATLAS (BD EN LA NUBE)
+var mongoDB = 'mongodb+srv://mardini:vDZ8tZYR0nmLEFo3@madriddebolsillo.ahd8y8d.mongodb.net/?retryWrites=true&w=majority&appName=MadridDeBolsillo';
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -116,7 +116,7 @@ app.get('/index', (req, res) => {
 });
 
 // Crear
-app.get('/crear', (req, res) => {
+app.get('/crear', isAuthenticated, (req, res) => {
   res.render('crear', { title: 'Crear Plan', user: req.user });
 });
 
