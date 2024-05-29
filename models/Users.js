@@ -24,10 +24,6 @@ const UserSchema = new mongoose.Schema(
             type: String,
             default: null
         },
-        surname: {
-            type: String,
-            default: null
-        },
         city: {
             type: String,
             default: null

@@ -71,11 +71,13 @@
     </div>
   </nav>
   <% if (user) { %>
-    <h4>Bienvenido: <%= user.name %> <%= user.surname %> (<%= user.email %>)</h4>
+    <h6 class=".text-end">Bienvenido: <%= user.name %> (<%= user.email %>)</h6>
   <% } else { %>
-    <h4>Bienvenido. ¿Aún no te has creado un usuario? Inicia sesión o regístrate ya</h4>
+    <h6>Bienvenido. ¿Aún no te has creado un usuario? Inicia sesión o regístrate ya</h6>
   <% } %>
 </header>
+
+
 
 
 

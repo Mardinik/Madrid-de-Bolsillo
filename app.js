@@ -115,7 +115,7 @@ app.get('/index', (req, res) => {
   res.render('index', { title: '', user: req.user });
 });
 
-// Crear
+// Crear (solo usuarios)
 app.get('/crear', isAuthenticated, (req, res) => {
   res.render('crear', { title: 'Crear Plan', user: req.user });
 });

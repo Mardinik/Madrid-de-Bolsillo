@@ -13,65 +13,70 @@
 </head>
 <body>
   <section>
+    <div class="centrador">
+      <h1><%= title %></h1>
+    </div>
+
     <div class="container flow-content">
-    <h1><%= title %></h1>
-      <h2 class="section-title">¿Quienes somos?</h2>
-      <ul role="list" class="grid">
-        <li>
-          <article class="card" data-visible="false">
-            <div class="card__front flow-content">
-              <img class="card__img mx-auto" src="https://i.pinimg.com/564x/19/0e/af/190eaf33b2f31cca9045daa33f20cc02.jpg" />
-              <div class="flow-content" data-spacing="sm">
+      <div id="Contenedor1">
+        <h2 class="section-title">¿Quienes somos?</h2>
+        <ul role="list" class="grid">
+          <li>
+            <article class="card" data-visible="false">
+              <div class="card__front flow-content">
+                <img class="card__img mx-auto" src="https://i.pinimg.com/564x/19/0e/af/190eaf33b2f31cca9045daa33f20cc02.jpg" />
+                <div class="flow-content" data-spacing="sm">
+                  <p class="card__name">Marcos Díaz</p>
+                  <p class="card__position">Software Engineer & Graphic Designer</p>
+                </div>
+              </div>
+              <div class="card__back flow-content">
                 <p class="card__name">Marcos Díaz</p>
-                <p class="card__position">Software Engineer & Graphic Designer</p>
+                <q>Estudiante de la ETSITGC de la Universidad Politécnica de Madrid del grado de Tecnologías de la Información Geoespacial</q>
+                <ul role="list" class="card__social flex-group">
+                  <li>
+                    <a href="https://www.linkedin.com/in/marcos-d%C3%ADaz-846a06290/">
+                      <i class="fa-brands fa-linkedin "></i>
+                    </a>
+                  </li>
+                </ul>
               </div>
-            </div>
-            <div class="card__back flow-content">
-              <p class="card__name">Marcos Díaz</p>
-              <q>Estudiante de la ETSITGC de la Universidad Politécnica de Madrid del grado de Tecnologías de la Información Geoespacial</q>
-              <ul role="list" class="card__social flex-group">
-                <li>
-                  <a href="https://www.linkedin.com/in/marcos-d%C3%ADaz-846a06290/">
-                    <i class="fa-brands fa-linkedin "></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <footer class="card__footer">
-              <button data-card-controller class="card__toggle">
-                <i class="fa-solid fa-plus card__toggle-icon"></i>
-              </button>
-            </footer>
-          </article>
-        </li>
-        <li>
-          <article class="card" data-visible="false">
-            <div class="card__front flow-content">
-              <img class="card__img mx-auto" src="https://www.w3schools.com/bootstrap5/img_avatar3.png" />
-              <div class="flow-content" data-spacing="sm">
+              <footer class="card__footer">
+                <button data-card-controller class="card__toggle">
+                  <i class="fa-solid fa-plus card__toggle-icon"></i>
+                </button>
+              </footer>
+            </article>
+          </li>
+          <li>
+            <article class="card" data-visible="false">
+              <div class="card__front flow-content">
+                <img class="card__img mx-auto" src="https://www.w3schools.com/bootstrap5/img_avatar3.png" />
+                <div class="flow-content" data-spacing="sm">
+                  <p class="card__name">Yaiza Muñoz</p>
+                  <p class="card__position">Graphic Designer & Software Engineer</p>
+                </div>
+              </div>
+              <div class="card__back flow-content">
                 <p class="card__name">Yaiza Muñoz</p>
-                <p class="card__position">Graphic Designer & Software Engineer</p>
+                <q>Estudiante de la ETSITGC de la Universidad Politécnica de Madrid del grado de Tecnologías de la Información Geoespacial</q>
+                <ul role="list" class="card__social flex-group">
+                  <li>
+                    <a href="https://www.linkedin.com/in/yaiza-mu%C3%B1oz-gonz%C3%A1lez-541471212/">
+                      <i class="fa-brands fa-linkedin"></i>
+                    </a>
+                  </li>
+                </ul>
               </div>
-            </div>
-            <div class="card__back flow-content">
-              <p class="card__name">Yaiza Muñoz</p>
-              <q>Estudiante de la ETSITGC de la Universidad Politécnica de Madrid del grado de Tecnologías de la Información Geoespacial</q>
-              <ul role="list" class="card__social flex-group">
-                <li>
-                  <a href="https://www.linkedin.com/in/yaiza-mu%C3%B1oz-gonz%C3%A1lez-541471212/">
-                    <i class="fa-brands fa-linkedin"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <footer class="card__footer">
-              <button data-card-controller class="card__toggle">
-                <i class="fa-solid fa-plus card__toggle-icon"></i>
-              </button>
-            </footer>
-          </article>
-        </li> 
-      </ul>
+              <footer class="card__footer">
+                <button data-card-controller class="card__toggle">
+                  <i class="fa-solid fa-plus card__toggle-icon"></i>
+                </button>
+              </footer>
+            </article>
+          </li> 
+        </ul>
+      </div>
     </div>
   </section>
   <script src="/js/main.js"></script>

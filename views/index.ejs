@@ -2,12 +2,15 @@
 <html lang="en" ng-app="myApp">
 <% include header %>
 <body>
-  <h1><%= title %></h1>
-  <h3><strong>PÁGINA PRINCIPAL</strong></h3>
+  <div class="titulo">
+    <a id="h1" class="fa fa-map-location navbar-brand"> M€B</a>
+    <h1>MADRID DE BOLSILLO</h1>
+  <a id="h1" class="fa fa-map-location navbar-brand" > M€B</a>
+  </div>
 
   <div id="Contenedor1">
     <div style="text-align: center;">
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur repudiandae delectus, accusantium dolore, consectetur dolorem eos quo et odio laboriosam natus mollitia tempore cumque sapiente impedit consequuntur repellendus praesentium labore.</p>
+      <p><%= title %> ipsum dolor sit amet consectetur adipisicing elit. Tenetur repudiandae delectus, accusantium dolore, consectetur dolorem eos quo et odio laboriosam natus mollitia tempore cumque sapiente impedit consequuntur repellendus praesentium labore.</p>
     </div>
   
     <main id="main-content">
@@ -25,7 +28,7 @@
     <!-- MAPA -->
     
     <div id="map-container" style="position: relative; margin: 0 auto; width: 80%; border-radius: 10px; overflow: hidden;">
-      <div id="mapid" style="height: 800px;"></div>
+      <div id="mapid" style="height: 700px;"></div>
     </div>
   </div>
 
