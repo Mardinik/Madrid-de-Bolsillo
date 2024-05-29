@@ -24,11 +24,11 @@
 
 <header id="header">
   <div class="top"></div>
-  <nav class="navbar bg-light rounded">
+  <nav class="navbar rounded" style="background: #0d1a2d90; backdrop-filter: blur(10px); background-size: cover; background-position: center;">
     <div class="container">
       <a class="fa fa-map-location navbar-brand" href="/index"> M€B</a>
       <span class="navbar-text">MADRID DE BOLSILLO</span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"  aria-label="Toggle navigation">
+      <button style="background-color: #ccc;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"  aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -50,12 +50,12 @@
                 <i class="fa fa-user"> Invitado </i>
               <% } %>
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <ul class="dropdown-menu" style="background-color: #ccc;" aria-labelledby="navbarDropdown">
               <% if (user) { %>
-                <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
+                <li><a class="dropdown-item" style="color: #0d1a2d;" href="/logout">Cerrar Sesión</a></li>
               <% } else { %>
-                <li><a class="dropdown-item" href="/login">Iniciar Sesión</a></li>
-                <li><a class="dropdown-item" href="/login">Registrarse</a></li>
+                <li><a class="dropdown-item" style="color: #0d1a2d;" href="/login">Iniciar Sesión</a></li>
+                <li><a class="dropdown-item" href="/login" style="color: #0d1a2d;">Registrarse</a></li>
               <% } %>
             </ul>
           </li>
@@ -71,9 +71,9 @@
     </div>
   </nav>
   <% if (user) { %>
-    <h6 class=".text-end">Bienvenido: <%= user.name %> (<%= user.email %>)</h6>
+    <h6 class=".text-end">Bienvenid@: <%= user.name %> (<%= user.email %>)</h6>
   <% } else { %>
-    <h6>Bienvenido. ¿Aún no te has creado un usuario? Inicia sesión o regístrate ya</h6>
+    <h6>Bienvenid@. ¿Aún no te has creado un usuario? Inicia sesión o regístrate ya</h6>
   <% } %>
 </header>
 

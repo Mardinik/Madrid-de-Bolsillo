@@ -6,15 +6,20 @@
 </head>
 <body>
   <div id="Contenedor1">
-    <h1 class="admin"><strong>PÁGINA DEL ADMIN</strong> - YAIZA Y MARCOS</h1>
-    <div class="json">
-      <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="jsonFile" name="jsonFile" accept=".json">
-        <button type="submit">Upload JSON</button>
-      </form>
+    <h1 class="admin">PÁGINA DEL ADMIN - YAIZA Y MARCOS</h1>
+
+    <p style="width: 800px; text-align: center; margin-top: 12%; margin-left: 27%; height: 0%;">Esta es la página del administardor. Aquí, solo los usuarios con la propiedad <strong>isAdmin:true</strong> podrán acceder. En ella los administradores pueden actuaizar el mapa interactivo de la página prinipal. Usa "Elegir archivo" para subir un .json con la información actualizada de todos los planes y después "Upload JSON" para actualizar la base de datos en MongoDB Atlas</p>
+
+    <div class="d-flex justify-content-center align-items-center" style="width: 90%; margin-left: 35%; position: relative; margin-top: 10%;">
+      <div class="json">
+        <form id="uploadForm" enctype="multipart/form-data">
+          <input type="file" id="jsonFile" name="jsonFile" accept=".json">
+          <button type="submit">Upload JSON</button>
+        </form>
+      </div>
     </div>
   
-    <div class="buttons">
+    <div class="buttons" style="width: 100%; margin-left: 42%; position: relative; margin-top: 2%;">
       <a href="/xml" class="Boton">Marcadores XML</a>
       <a href="/json" class="Boton">Marcadores JSON</a>
     </div>
@@ -71,8 +76,9 @@
       color-scheme: dark;
     }
     
-    body {
-      font-family: 'Montserrat', sans-serif;
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+    body{
+      font-family: 'Poppins', sans-serif;
       min-height: 100vh;
       background-image: url('https://www.xtrafondos.com/wallpapers/atardecer-en-la-costa-10619.jpg');
       background-size: cover;
@@ -83,19 +89,13 @@
 
     /* Contenedor principal */
     #Contenedor1 {
-    background: rgba(13, 26, 45, 0.5); /* Opacidad 0.5 = 50% */
-    padding: 50px;
-    border-radius: 10px;
-    backdrop-filter: blur(10px); 
-    background-size: cover;
-    background-position: center;
-  }
-
-    .json {
-      position: absolute;
-      color: #0d1a2d;
-      top: 37%; 
-      left: 39%; 
+      background: rgba(13, 26, 45, 0.5); /* Opacidad 0.5 = 50% */
+      height: 890px;
+      padding: 50px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px); 
+      background-size: cover;
+      background-position: center;
     }
     
     .admin {
@@ -110,6 +110,7 @@
     
     /* volver boton */
     .Volver{
+      text-decoration: none;
       padding: 0.8em 1.8em;
       border-radius: 8px;
       background-color: transparent;
@@ -120,10 +121,10 @@
       z-index: 1;
       transition: 0.3s;
 
-      position: absolute; /* Cambiado a position: absolute */
-      top: 70%; /* Centra verticalmente */
-      left: 50%; /* Centra horizontalmente */
-      transform: translate(-50%, -50%); /* Corrige la posición */
+      position: absolute;
+      top: 70%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
       height: 100px;
       display: flex;
       justify-content: center;
@@ -149,34 +150,6 @@
     }
     .Volver:hover{
       color:#111;
-    }
-    
-    .buttons {
-      margin-right: 3%;
-      left: 100px;
-      position: absolute;
-      bottom: 20%; /* Ajusta la distancia desde la parte inferior */
-      right: 70%; /* Ajusta la distancia desde la derecha */
-      padding: 10px 20px; /* Ajusta el relleno del botón */
-      border: none; /* Elimina el borde del botón */
-      background-color: #ffeba7; /* Cambia el color de fondo del botón */
-      color: var(--text-primary); /* Cambia el color del texto del botón */
-      border-radius: 5px; /* Agrega bordes redondeados al botón */
-      font-size: 16px; /* Ajusta el tamaño del texto */
-      cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra al botón */
-      transition: background-color 0.3s; /* Agrega una transición suave al color de fondo */
-    }
-    
-    /* Cambia el color de fondo cuando el cursor está sobre el botón */
-    .buttons:hover {
-      background-color: var(--clr-secondary); 
-      color: var(--text-secondary); 
-    }
-    
-    /* Estilo del ícono dentro del botón */
-    .buttons i {
-      margin-right: 5px; /* Añade un pequeño margen a la derecha del ícono */
     }
     
   </style>

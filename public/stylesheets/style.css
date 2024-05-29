@@ -23,9 +23,9 @@
     color-scheme: dark;
   }
   
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
-body{
-	font-family: 'Poppins', sans-serif;
+  @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+  body{
+	  font-family: 'Poppins', sans-serif;
     min-height: 100vh;
     background-image: url('https://www.xtrafondos.com/wallpapers/atardecer-en-la-costa-10619.jpg');
     background-size: cover;
@@ -74,9 +74,22 @@ body{
     margin: 0 auto; 
   }
   
-  
-  
-  
+
+  .navbar-text,
+  .navbar-brand,
+  .nav-link,
+  .dropdown-menu {
+      color: #ccc;
+  }
+
+  .navbar-toggler-icon span {
+      background-color: #ccc;
+  }
+
+  .navbar-toggler-icon.custom-color span {
+      background-color: #ccc;
+  }
+
   /* Estilos de los iconos */
   .custom-div-icon {
     width: 80px;
@@ -123,41 +136,116 @@ body{
     font-size: 20px;
   }
   
-  /* Estilos del círculo */
-  .circle {
-    width: 80px; /* Aumenta el tamaño del contenedor del círculo para dejar espacio para el icono */
-    height: 80px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%; /* Asegura que el contenedor sea un círculo */
-    border: 4px solid #ccc; /* Añade un borde para destacar el círculo */
-    margin: 10px; /* Añade un espacio entre los círculos */
-  }
-  
+/* Estilos del círculo */
+.circle {
+  color: var(--text-primary);
+  width: 80px; 
+  height: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; 
+  border: 4px solid var(--text-primary); 
+  margin: 10px; 
+  transition: transform 0.3s, border-color 0.3s; 
+}
+
+/* Cambios al pasar el cursor por encima */
+.circle:hover {
+  transform: scale(1.1); 
+}
+
+.circle:hover i {
+  color: inherit; /* Reinicia el color del icono */
+}
+
+.circle[data-category="Restauración"]:hover {
+  border-color: #ef476f;
+}
+
+.circle[data-category="Restauración"]:hover i {
+  color: #ef476f; 
+}
+
+.circle[data-category="Viajes"]:hover {
+  border-color: #118ab2;
+}
+
+.circle[data-category="Viajes"]:hover i {
+  color: #118ab2;
+}
+
+.circle[data-category="Naturaleza"]:hover {
+  border-color: #43aa8b;
+}
+
+.circle[data-category="Naturaleza"]:hover i {
+  color: #43aa8b;
+}
+
+.circle[data-category="Deportes"]:hover {
+  border-color: #f9844a;
+}
+
+.circle[data-category="Deportes"]:hover i {
+  color: #f9844a;
+}
+
+.circle[data-category="Ocio"]:hover {
+  border-color: #815ac0;
+}
+
+.circle[data-category="Ocio"]:hover i {
+  color: #815ac0;
+}
+
+.circle[data-category="Gratis"]:hover {
+  border-color: #ffd60a;
+}
+
+.circle[data-category="Gratis"]:hover i {
+  color: #ffd60a;
+}
+
+.circle[data-category="Otro"]:hover {
+  border-color: #ff009d;
+}
+
+.circle[data-category="Otro"]:hover i {
+  color: #ff009d;
+}
+
+.circle a {
+  text-decoration: none; 
+}
+
+.circle a:hover {
+  color: rgb(255, 0, 157);
+}
+
+
   #main-content {
     display: flex;
     justify-content: center;
-    height: 50%; /* Ajusta la altura según tus necesidades */
+    height: 50%; 
   }
 
   .editarPlan {
     margin-right: 3%;
     position: absolute;
-    bottom: 20%; /* Ajusta la distancia desde la parte inferior */
-    right: 90%; /* Ajusta la distancia desde la derecha */
-    padding: 10px 20px; /* Ajusta el relleno del botón */
-    border: none; /* Elimina el borde del botón */
-    background-color: var(--clr-primary); /* Cambia el color de fondo del botón */
-    color: var(--text-primary); /* Cambia el color del texto del botón */
-    border-radius: 5px; /* Agrega bordes redondeados al botón */
-    font-size: 16px; /* Ajusta el tamaño del texto */
+    bottom: 20%; 
+    right: 90%; 
+    padding: 10px 20px;
+    border: none; 
+    background-color: var(--clr-primary); 
+    color: var(--text-primary); 
+    border-radius: 5px; 
+    font-size: 16px; 
     cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra al botón */
-    transition: background-color 0.3s; /* Agrega una transición suave al color de fondo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s;
   }
-  
-  /* Cambia el color de fondo cuando el cursor está sobre el botón */
+
   .editarPlan:hover {
     background-color: var(--clr-secondary); 
     color: var(--text-secondary); 
@@ -165,7 +253,7 @@ body{
   
   /* Estilo del ícono dentro del botón */
   .editarPlan i {
-    margin-right: 5px; /* Añade un pequeño margen a la derecha del ícono */
+    margin-right: 5px;
   }
 
   #footer {
@@ -190,3 +278,91 @@ body{
     color: #1f2029;
   }
 
+/* OFFCANVAS DE crear.ejs */
+
+.offcanvas {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid var(--clr-secondary);
+}
+
+.offcanvas-title {
+    color: var(--text-primary);
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+.dropdown-menu {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--clr-secondary);
+}
+
+.dropdown-item {
+    color: var(--text-primary);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--clr-secondary);
+    color: var(--text-secondary);
+}
+
+.btn-secondary {
+    background-color: var(--clr-secondary);
+    color: var(--text-secondary);
+    border: none;
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--clr-primary);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background-color: #c82333;
+}
+
+.btn-primary {
+    background-color: var(--clr-primary);
+    border: none;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--clr-secondary);
+    color: var(--text-secondary);
+}
+
+.modal-content {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--clr-secondary);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--clr-secondary);
+}
+
+.form-control {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--clr-secondary);
+}
+
+.form-control:focus {
+    border-color: var(--clr-secondary);
+    box-shadow: 0 0 0 0.2rem rgba(255, 235, 167, 0.25);
+}
+
+.form-text {
+    color: var(--text-primary);
+}
