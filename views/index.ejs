@@ -10,7 +10,7 @@
 
   <div id="Contenedor1">
     <div style="text-align: center;">
-      <p><strong><%= title %></strong> es una plataforma que hace que explorar Madrid sea asequible y emocionante para todo el mundo. Ofrecemos una amplia gama de planes y actividades increíbles en la ciudad y alrededores, todos convenientemente categorizados para que puedas encontrar fácilmente lo que buscan. Ya sean experiencias gastronómicas, viajes y lugares increíbles, aventuras al aire libre, para hacer deportes y otros eventos culturales. <strong><%= title %></strong> te permite diferenciar entre planes asequibles y gratuitos, lo que facilita aún más la búsqueda de opciones económicas. Perfecta tanto para turistas como para locales, es un recurso increíble para cualquiera que busque actividades divertidas y asequibles para disfrutar con amigos o familiares.</p>
+      <p><strong><%= title %></strong> es una plataforma que hace que explorar Madrid sea asequible y emocionante para todo el mundo. Ofrecemos una amplia gama de planes y actividades increíbles en la ciudad y alrededores, todos convenientemente categorizados para que puedas encontrar fácilmente lo que buscas. Ya sean experiencias gastronómicas, viajes y lugares increíbles, aventuras al aire libre, para hacer deporte y otros eventos culturales. <strong><%= title %></strong> te permite diferenciar entre planes asequibles y gratuitos, lo que facilita aún más la búsqueda de opciones económicas. Perfecta tanto para turistas como para locales, es un recurso increíble para cualquiera que busque actividades divertidas y asequibles para disfrutar con amigos o familiares.</p>
       <h5 style="color: #ffeba7;"><strong>¡Empieza ya a buscar los mejores planes de Madrid!</strong></h5>
     </div>
   
@@ -90,16 +90,19 @@
     }
 
     function createPopupContent(marker) {
-      return `
+    const precio = marker.precio === 0 ? 'Gratis' : `€${marker.precio.toFixed(2)}`;
+    return `
         <div style="text-align: center;">
           <h3 style="margin: 0; color: #333;">${marker.title}</h3>
           <p style="font-size: 0.9em; color: #666;">${marker.info}</p>
           <img src="${marker.image}" alt="${marker.title}" style="width: 100%; max-width: 200px; height: auto; border-radius: 5px;">
+          <p style="font-size: 0.9em; color: #666;">Precio aproximado: ${precio}</p>
           <a href="${marker.masInfo}" target="_blank">
             <button style="padding: 5px 10px; margin-top: 10px; background-color: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;">Más info</button>
           </a>
         </div>`;
-    }
+}
+
   </script>
 
   <!-- JS - MAPA -->

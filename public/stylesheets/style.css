@@ -34,12 +34,12 @@
     padding: 1%;
   }
   
-  /* Contenedor principal */
+  /* Contenedor principal (Fondo) */
   #Contenedor1 {
     background: rgba(13, 26, 45, 0.5); /* Opacidad 0.5 = 50% */
     padding: 20px;
     border-radius: 10px;
-    backdrop-filter: blur(10px); /* Añadir desenfoque de fondo */
+    backdrop-filter: blur(10px); /* desenfoque */
     background-size: cover;
     background-position: center;
   }
@@ -107,32 +107,32 @@
   
   /* Marcadores de estado */
   #markerR {
-    color: rgb(255, 0, 0);
+    color: #ef476f;
     font-size: 20px;
   }
   
   #markerV {
-    color: rgb(0, 47, 255);
+    color: #118ab2;
     font-size: 20px;
   }
   
   #markerN {
-    color: rgb(0, 148, 32);
+    color: #43aa8b;
     font-size: 20px;
   }
   
   #markerD {
-    color: rgb(255, 217, 0);
+    color: #f9844a;
     font-size: 20px;
   }
   
   #markerO {
-    color: rgb(132, 0, 255);
+    color: #815ac0;
     font-size: 20px;
   }
   
   #markerOt {
-    color: rgb(255, 0, 157);
+    color: #ff009d;
     font-size: 20px;
   }
   
@@ -150,7 +150,7 @@
   transition: transform 0.3s, border-color 0.3s; 
 }
 
-/* Cambios al pasar el cursor por encima */
+/* FILTRO MARCADORES */
 .circle:hover {
   transform: scale(1.1); 
 }
@@ -220,7 +220,15 @@
 }
 
 .circle a:hover {
-  color: rgb(255, 0, 157);
+  color: #ff009d;
+}
+
+.btn a {
+  color: var(--clr-primary); 
+  text-decoration: none; 
+}
+.btn a:hover {
+  color: var(--text-primary);
 }
 
 
@@ -251,7 +259,6 @@
     color: var(--text-secondary); 
   }
   
-  /* Estilo del ícono dentro del botón */
   .editarPlan i {
     margin-right: 5px;
   }
@@ -318,7 +325,8 @@
 }
 
 .btn-secondary:hover, .btn-secondary:focus {
-    background-color: var(--clr-primary);
+  background-color: var(--bg-primary);
+  color: var(--clr-secondary);
 }
 
 .btn-danger {
@@ -330,13 +338,12 @@
 }
 
 .btn-primary {
-    background-color: var(--clr-primary);
     border: none;
 }
 
 .btn-primary:hover, .btn-primary:focus {
-    background-color: var(--clr-secondary);
-    color: var(--text-secondary);
+    background-color: var(--bg-primary);
+    color: var(--clr-secondary);
 }
 
 .modal-content {

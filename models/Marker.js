@@ -18,7 +18,11 @@ const markerSchema = new mongoose.Schema({
         enum: ['normal', 'gratis'],
         default: 'normal'
     },
-    masInfo: String
+    masInfo: String,
+    precio: {
+        type: Number,
+        default: 0.0
+    }
 });
 
 const Marker = mongoose.model('Marker', markerSchema);
