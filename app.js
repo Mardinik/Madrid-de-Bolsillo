@@ -45,38 +45,32 @@ app.use(flash());
 // Middleware para verificar la autenticación del usuario
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-      // Si el usuario está autenticado, continuar con la solicitud
       return next();
   }
 
   res.redirect('/'); 
 };
 
-// Agregar el middleware isAuthenticated a las rutas que requieran autenticación
+// Middleware isAuthenticated
 app.use('/admin', isAuthenticated);
 app.use('/markers', isAuthenticated);
 
 // Middleware para verificar si el usuario está presente en la base de datos
 app.use((req, res, next) => {
   if (req.user) {
-    // Si el usuario está autenticado, verificar si existe en la base de datos
     User.findById(req.user._id).exec()
       .then(user => {
         if (!user) {
-          // Si el usuario no está presente, limpiar la sesión y redirigir a la página de inicio
-          req.logout(); // Limpiar sesión
+          req.logout();
           return res.redirect('/');
         }
-        // Si el usuario existe en la base de datos, continuar con la solicitud
         next();
       })
       .catch(err => {
-        // Manejar cualquier error que ocurra durante la consulta
         console.error(err);
         return next(err);
       });
   } else {
-    // Si el usuario no está autenticado, continuar con la solicitud
     next();
   }
 });
@@ -100,6 +94,8 @@ app.use('/admin', adminRouter);
 app.use('/api', apiRouter); 
 app.use('/markers', markersRouter);
 
+// IR A LAS DEMÁS PÁGINAS
+
 // Acerca de
 app.get('/acerca', (req, res) => {
   res.render('acerca', { title: 'Acerca de', user: req.user });
@@ -119,7 +115,6 @@ app.get('/index', (req, res) => {
 app.get('/crear', isAuthenticated, (req, res) => {
   res.render('crear', { title: 'Crear Plan', user: req.user });
 });
-
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -283,7 +283,7 @@
 
 		// Solo crear marcadores si se ha confirmado un plan
 		mymap.on('click', function(e) {
-			if (planSelected && !markerConfirmed) { // Verificar si un plan está seleccionado y el marcador está confirmado
+			if (planSelected && !markerConfirmed) { 
 				createNewMarker(e.latlng);
 			}
 		});
@@ -291,7 +291,7 @@
 		// (MOSTRAR) CONFIRMAR MARCADOR - BOTÓN - después de hacer clic en "Crear nuevo plan"
 		document.querySelector('[data-bs-target="#offcanvasExample"]').addEventListener('click', function() {
 			document.getElementById('confirmMarkerBtn').style.display = 'block'; 
-			planSelected = false; // Resetear la selección de plan
+			planSelected = false; 
 		});
 		
 		// (OCULTAR) CONFIRMAR MARCADOR - BOTÓN
@@ -445,7 +445,6 @@
 			}
 		});
 
-
 		// ELIMINAR - BOTÓN
 		document.getElementById('deleteMarkerBtn').addEventListener('click', async function() {
 			var markerId = document.getElementById('saveMarkerBtn').getAttribute('data-marker-id');
@@ -481,9 +480,9 @@
 							data: {
 								...markerData[markerId],
 								category: markerData[markerId].category,
-								title: markerData[markerId].title, // Guardar el título del marcador
-								image: markerData[markerId].image, // Guardar la imagen del marcador
-								info: markerData[markerId].info // Guardar la información del marcador
+								title: markerData[markerId].title,
+								image: markerData[markerId].image, 
+								info: markerData[markerId].info
 							}
 						};
 					})
@@ -502,12 +501,11 @@
 			if (response.ok) {
 				const savedMarkers = await response.json();
 				savedMarkers.forEach(marker => {
-					const icon = getIconByCategory(marker.data.category); // Asegúrate de que category esté en marker.data
+					const icon = getIconByCategory(marker.data.category); 
 					const newMarker = L.marker(marker.latlng, { icon }).addTo(mymap);
 					markers.push(newMarker);
 					markerData[newMarker._leaflet_id] = marker.data;
 					
-					// Añade el evento de clic para editar el marcador
 					newMarker.on('click', function() {
 						openMarkerModal(newMarker);
 					});
@@ -581,7 +579,6 @@
 			return icon;
 		}
 
-		// Llamar a la función para cargar los marcadores cuando la página se carga
 		window.onload = function() {
 			loadMarkersFromDatabase();
 		};

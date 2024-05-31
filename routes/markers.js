@@ -10,10 +10,7 @@ router.post('/saveMarkers', (req, res) => {
 
   User.findById(req.user._id, (err, user) => {
       if (err) return res.status(500).json({ error: err });
-      
-      // Guarda los marcadores del cuerpo de la solicitud en el campo 'markers' del usuario
       user.markers = req.body.markers;
-      
       user.save((err) => {
           if (err) return res.status(500).json({ error: err });
           res.status(200).json({ success: true });

@@ -36,7 +36,6 @@ router.get('/', async function(req, res, next) {
 router.get('/xml', async (req, res, next) => {
   try {
     var markers = await Marker.find();
-    // Pasando a string y luego de nuevo a JSON nos evitamos errores de conversión posteriores con o2x
     var markersFixed = JSON.parse(JSON.stringify(markers));
     res.set('Content-Type', 'text/xml');
     res.send(o2x({
